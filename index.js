@@ -25,37 +25,44 @@ client.connect((err) => {
   const ordersCollection = client.db("PhotixDB").collection("orders");
   const adminCollection = client.db("PhotixDB").collection("adminList");
   // perform actions on the collection object
+
+  // express-fileupload
+  // app.post("/add-service", (req, res) => {
+  //   const file = req.files.image;
+  //   const price = req.body.price;
+  //   const title = req.body.title;
+  //   const description = req.body.description;
+  //   //   console.log(image, price, title, description);
+  //   const filePath = `${__dirname}/photography/${file.name}`;
+  //   file.mv(filePath, (err) => {
+  //     if (err) {
+  //       console.log(err);
+  //       res.status(500).send({ massage: "Failed to upload image!" });
+  //     }
+  //     const newImage = fs.readFileSync(filePath);
+  //     const encodedImage = newImage.toString("base64");
+  //     const image = {
+  //       contentType: file.mimetype,
+  //       size: file.size,
+  //       img: Buffer(encodedImage, "base64"),
+  //     };
+  //     servicesCollection
+  //       .insertOne({ title, price, description, image })
+  //       .then((result) => {
+  //         fs.remove(filePath, (err) => {
+  //           if (err) {
+  //             console.log(err);
+  //           }
+  //         });
+  //         res.send(result);
+  //         console.log(result);
+  //       });
+  //   });
+  // });
+
   app.post("/add-service", (req, res) => {
-    const file = req.files.image;
-    const price = req.body.price;
-    const title = req.body.title;
-    const description = req.body.description;
-    //   console.log(image, price, title, description);
-    const filePath = `${__dirname}/photography/${file.name}`;
-    file.mv(filePath, (err) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send({ massage: "Failed to upload image!" });
-      }
-      const newImage = fs.readFileSync(filePath);
-      const encodedImage = newImage.toString("base64");
-      const image = {
-        contentType: file.mimetype,
-        size: file.size,
-        img: Buffer(encodedImage, "base64"),
-      };
-      servicesCollection
-        .insertOne({ title, price, description, image })
-        .then((result) => {
-          fs.remove(filePath, (err) => {
-            if (err) {
-              console.log(err);
-            }
-          });
-          res.send(result);
-          console.log(result);
-        });
-    });
+    const service = req.body;
+    servicesCollection.insertOne(service).then((result) => res.send(result));
   });
 
   app.get("/services", (req, res) => {
