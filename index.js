@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cors({
   origin: ['http://localhost:3000'],
 }));
-app.use(express.static("photography"));
+app.use(express.static("build"));
 app.use(fileUpload());
 
 
@@ -224,9 +224,5 @@ app.delete("/api/delete-service/:id", async (req, res) => {
   })
 });
 
-
-app.get("/", (req, res) => {
-  res.send("photix server");
-});
 
 app.listen(port);
